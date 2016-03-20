@@ -1,5 +1,7 @@
 # Enumerator
 
+[![](https://travis-ci.org/jamesqo/Enumerator.svg?branch=master)](https://travis-ci.org/jamesqo/Enumerator) [![](https://ci.appveyor.com/api/projects/status/github/jamesqo/Enumerator?branch=master&svg=true)](https://ci.appveyor.com/project/jamesqo/Enumerator)
+
 A fast, value-type enumerator for arrays in .NET.
 
 ## Installation
