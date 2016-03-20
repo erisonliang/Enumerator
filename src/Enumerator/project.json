@@ -3,23 +3,17 @@
     "title": "Enumerator",
     "description": "A lightning-fast enumerator for arrays.",
     "authors": [ "James Ko" ],
+    "owners": [ "James Ko" ],
     "tags": [ "array", "enumerator" ],
     "projectUrl": "https://github.com/jamesqo/Enumerator",
     "licenseUrl": "https://github.com/jamesqo/Enumerator/blob/master/LICENSE",
     
     "frameworks": {
-        "dotnet": {
+        "dotnet5.1": {
             "dependencies": {
-                "System.Runtime": "4.0.20"
+                "System.Runtime": "4.0.0"
             }
         },
-        ".NETPortable,Version=v4.5,Profile=Profile259": {
-            "frameworkAssemblies": {
-                "System.Runtime": {
-                    "type": "build"
-                }
-            }
-        },
-        "net20": { }
+        "net40": { }
     }
 }
