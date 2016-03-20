@@ -12,7 +12,7 @@ namespace System.Collections.Generic
 
         public static ClassEnumerator<T> Class<T>(T[] array)
         {
-            return ClassEnumerator<T>.Create(array);
+            return new ClassEnumerator<T>(array);
         }
     }
 }
