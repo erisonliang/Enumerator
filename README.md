@@ -17,6 +17,8 @@ If you're building your own collection class in .NET and it uses an array as its
 ## Usage
 
 ```csharp
+using System.Colletions.Generic;
+
 public class MyCollection<T> : IEnumerable<T>
 {
     private T[] array;
