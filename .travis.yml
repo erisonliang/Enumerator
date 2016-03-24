@@ -1,4 +1,6 @@
 language: csharp
+git:
+  submodules: false
 before_install:
   # Travis has trust issues with SSH
   - sed -i 's/git@github.com:/https:\/\/github.com\//g' .gitmodules
