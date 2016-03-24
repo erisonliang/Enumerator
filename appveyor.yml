@@ -1,3 +1,3 @@
 install:
   - dnvm upgrade
-  - dnu build
+  - build/build
