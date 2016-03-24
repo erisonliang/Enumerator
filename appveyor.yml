@@ -1,4 +1,5 @@
 install:
+  - ps: $contents = gc .gitmodules && $contents -Replace 'git@github.com:', 'https://github.com/' | sc .gitmodules
   - git submodule update --init --recursive
   - dnvm upgrade
   - build\this
