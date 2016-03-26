@@ -14,6 +14,11 @@ namespace System.Collections.Generic
 
         internal StructEnumerator(T[] array, int index)
         {
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if ((uint)(index + 1) > array.Length)
+                throw new IndexOutOfRangeException(nameof(index));
+            
             this.array = array;
             this.index = index;
         }
