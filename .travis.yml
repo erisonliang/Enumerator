@@ -5,7 +5,5 @@ install:
   - dnvm upgrade -r mono
 script:
   - ./build.sh
-mono:
-  - nightly
 notifications:
   email: false
