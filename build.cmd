@@ -8,10 +8,10 @@ goto main
 :buildSubdir
 
 pushd %1
-for /f %%projectFile in ('dir /b /s project.json') do (
-    dnu restore "%%projectFile"
-    dnu build "%%projectFile"
-    dnu pack "%%projectFile"
+for /f "delims=" %%p in ('dir /a-d /b /s project.json') do (
+    dnu restore "%%p"
+    dnu build "%%p"
+    dnu pack "%%p"
 )
 popd
 goto :EOF
