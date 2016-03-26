@@ -46,3 +46,11 @@ public class MyCollection<T> : IEnumerable<T>
   - Windows Phone Silverlight 8.0
   - Xamarin.iOS
   - Xamarin.Android
+
+## Related Projects
+
+- [netbuild](https://github.com/jamesqo/netbuild) - provides the build scripts for this repo
+
+## License
+
+[MIT](LICENSE)
