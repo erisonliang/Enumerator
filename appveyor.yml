@@ -1,4 +1,3 @@
 install:
-  - git submodule update --init --recursive
   - dnvm upgrade
-  - build\this
+  - build.cmd
