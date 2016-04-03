@@ -2,7 +2,7 @@
 setlocal enableDelayedExpansion
 
 set config=Release
-set listProjects=dir /a-d /b /s project.json ^^^| findstr /v /i /c:bin /c:obj
+set "listProjects=dir /a-d /b /s project.json ^| findstr /v /i /c:bin /c:obj"
 
 goto parseOptions
 
@@ -36,7 +36,7 @@ goto :EOF
 :runTests
 
 pushd %1
-for /f "delims=" %%p in ('call :listProjects %*') do dnx -p "%%p" test
+for /f "delims=" %%p in ('%listProjects%') do dnx -p "%%p" test
 popd
 goto :EOF
 
