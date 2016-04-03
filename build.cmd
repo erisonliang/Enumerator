@@ -1,23 +1,15 @@
 @echo off
 setlocal enableDelayedExpansion
 
-goto main
+set config=Release
+
+goto parseOptions
 
 :: Functions
 
 :buildSubdir
 
-pushd %1
-for /f "delims=" %%p in ('dir /a-d /b /s project.json') do (
-    :: Exclude bin/ and obj/ directories
-    echo %%p | findstr /i /c:bin /c:obj > NUL
-    if !ERRORLEVEL! NEQ 0 (
-        :: dnu is a batch script, so we need to `call` it
-        call dnu restore "%%p"
-        call dnu pack "%%p"
-    )
-)
-popd
+for /f "delims=" %%p in ('call :listProjects %*') do call dnu pack "%%p" --configuration "%config%"
 goto :EOF
 
 :checkInstalled
@@ -30,19 +22,48 @@ if %ERRORLEVEL% NEQ 0 (
 )
 goto :EOF
 
-:runTests
+:listProjects
 
 pushd %1
 for /f "delims=" %%p in ('dir /a-d /b /s project.json') do (
     :: Exclude bin/ and obj/ directories
-    echo %%p | findstr /i /c:bin /c:obj > NUL
-    if !ERRORLEVEL! NEQ 0 dnx -p "%%p" test
+    echo %%p | findstr /v /i /c:bin /c:obj
 )
 popd
 goto :EOF
 
+:restore
+
+:: dnu is a batch script, so we need to `call` it
+for /f "delims=" %%p in ('call :listProjects %*') do call dnu restore "%%p"
+goto :EOF
+
+:runTests
+
+for /f "delims=" %%p in ('call :listProjects %*') do dnx -p "%%p" test
+goto :EOF
+
 :: Entry point
-:main
+:parseOptions
+
+if "%~1" == "" goto parsingDone
+
+if "%~1" == "-c" (
+    shift
+    set config=%1
+    goto parseOptions
+)
+
+if "%~1" == "--config" (
+    shift
+    set config=%1
+    goto parseOptions
+)
+
+shift
+goto parseOptions
+
+:parsingDone
 
 :: Check for dnu and dnx
 call :checkInstalled dnu
@@ -50,6 +71,7 @@ call :checkInstalled dnx
 
 :: Do the actual work
 cd %~dp0
+call :restore src
+call :restore test
 call :buildSubdir src
-call :buildSubdir test
 call :runTests test
