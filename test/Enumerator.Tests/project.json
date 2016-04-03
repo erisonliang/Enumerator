@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "Enumerator": "",
         "xunit": "2.1.0",
         "xunit.runner.dnx": "2.1.0-rc1-build204"
     },
@@ -10,6 +11,10 @@
 
     "frameworks": {
         "dnx451": { },
-        "dnxcore50": { }
+        "dnxcore50": {
+            "dependencies": {
+                "System.Runtime": "4.0.20"
+            }
+        }
     }
 }
