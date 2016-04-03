@@ -2,13 +2,8 @@
 
 build_subdir()
 {
-    find "$1" -type f -name project.json |
-    grep -Ev '[Bb]in|[Oo]bj' |
-    while read -r projectfile
-    do
-        dnu restore "$projectfile"
-        dnu pack "$projectfile"
-    done
+    list_projects "$@" |
+    xargs -i dnu pack {} --configuration "$config"
 }
 
 fail()
@@ -17,12 +12,35 @@ fail()
     exit 1
 }
 
+list_projects()
+{
+    find "$@" -type f -name project.json |
+    grep -Ev '[Bb]in|[Oo]bj'
+}
+
+restore_pkgs()
+{
+    list_projects "$@" | xargs dnu restore
+}
+
 run_tests()
 {
-    find "$1" -type f -name project.json |
-    grep -Ev '[Bb]in|[Oo]bj' |
-    xargs -i dnx -p {} test
+    list_projects "$@" | xargs -i dnx -p {} test
 }
+
+config=Release
+
+# Parse options
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -c|--config)
+            shift
+            config=$1
+            ;;
+    esac
+    shift
+done
 
 # Check prereqs
 type dnu > /dev/null 2>&1 || fail "dnu isn't in your PATH!"
@@ -31,6 +49,6 @@ type dnx > /dev/null 2>&1 || fail "dnx isn't in your PATH!"
 scriptdir=$(dirname "$0")
 cd -P "$scriptdir"
 
+restore_pkgs src test
 build_subdir src
-build_subdir test
 run_tests test
