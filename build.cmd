@@ -1,74 +1,80 @@
 @echo off
-setlocal enableDelayedExpansion
+setlocal EnableDelayedExpansion
 
-set config=Release
-set "listProjects=dir /a-d /b /s project.json ^| findstr /v /i /c:bin /c:obj"
+set Config=Release
+set "ListProjects=dir /a-d /b /s project.json ^| findstr /v /i /c:bin /c:obj"
 
-goto parseOptions
+goto ParseOptions
 
 :: Functions
 
-:buildSubdir
+:BuildSubdir
 
-pushd %1
-for /f "delims=" %%p in ('%listProjects%') do call dnu pack "%%p" --configuration "%config%"
-popd
-goto :EOF
-
-:checkInstalled
-
-where %1 > NUL 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    echo %1 wasn't found in your PATH! 1>&2
-    echo See http://docs.asp.net/en/latest/getting-started/installing-on-windows.html for instructions on installing the DNX toolchain on your PC. 1>&2
-    exit /b %ERRORLEVEL%
+for %%d in (%*) do (
+    pushd %%d
+    for /f "delims=" %%p in ('%ListProjects%') do call dnu pack "%%p" --configuration "%Config%"
+    popd
 )
 goto :EOF
 
-:restore
+:CheckInstalled
 
-pushd %1
-:: dnu is a batch script, so we need to `call` it
-for /f "delims=" %%p in ('%listProjects%') do call dnu restore "%%p"
-popd
+for %%p in (%*) do (
+    where %%p > NUL 2>&1
+    if %ERRORLEVEL% NEQ 0 (
+        echo %%p wasn't found in your PATH! 1>&2
+        echo See http://docs.asp.net/en/latest/getting-started/installing-on-windows.html for instructions on installing the DNX toolchain on your PC. 1>&2
+        exit /b %ERRORLEVEL%
+    )
+)
 goto :EOF
 
-:runTests
+:Restore
 
-pushd %1
-for /f "delims=" %%p in ('%listProjects%') do dnx -p "%%p" test
-popd
+for %%d in (%*) do (
+    pushd %%d
+    :: dnu is a batch script, so we need to `call` it
+    for /f "delims=" %%p in ('%ListProjects%') do call dnu restore "%%p"
+    popd
+)
+goto :EOF
+
+:RunTests
+
+for %%d in (%*) do (
+    pushd %%d
+    for /f "delims=" %%p in ('%ListProjects%') do dnx -p "%%p" test
+    popd
+)
 goto :EOF
 
 :: Entry point
-:parseOptions
+:ParseOptions
 
-if "%~1" == "" goto parsingDone
+if "%~1" == "" goto ParsingDone
 
 if "%~1" == "-c" (
     shift
-    set config=%1
-    goto parseOptions
+    set "Config=%~1"
+    goto ParseOptions
 )
 
 if "%~1" == "--config" (
     shift
-    set config=%1
-    goto parseOptions
+    set "Config=%~1"
+    goto ParseOptions
 )
 
 shift
-goto parseOptions
+goto ParseOptions
 
-:parsingDone
+:ParsingDone
 
 :: Check for dnu and dnx
-call :checkInstalled dnu
-call :checkInstalled dnx
+call :CheckInstalled dnu dnx
 
 :: Do the actual work
 cd %~dp0
-call :restore src
-call :restore test
-call :buildSubdir src
-call :runTests test
+call :Restore src test
+call :BuildSubdir src
+call :RunTests test
