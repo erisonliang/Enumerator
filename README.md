@@ -40,12 +40,12 @@ public class MyCollection<T> : IEnumerable<T>
 
 - .NET Framework 4.0
 - ASP.NET Core
-- Profile 259
-  - Windows 8.0
-  - Windows Phone 8.1
-  - Windows Phone Silverlight 8.0
-  - Xamarin.iOS
-  - Xamarin.Android
+- Portable Class Libraries (Profile 259)
+- Windows 8.0
+- Windows Phone 8.1
+- Windows Phone Silverlight 8.0
+- Xamarin.iOS
+- Xamarin.Android
 
 ## Related Projects
 
