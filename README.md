@@ -14,7 +14,7 @@ Install-Package Enumerator
 
 ## What is this for?
 
-If you're building your own collection class in .NET and it uses an array as its backing store, then this is the package for you. What it does is essentially provide optimized, value-type implementations of `GetEnumerator` so when a user does a `foreach` through your collection it'll be as fast as lightning.
+If you're building your own collection class in .NET and it uses an array as its backing store, then this is the package for you. What it does is essentially provide optimized, value-type implementations of `GetEnumerator` so when a user does a `foreach` through your collection it'll be as fast as :zap:.
 
 ## Usage
 
