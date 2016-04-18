@@ -1,5 +1,5 @@
 {
-    "version": "1.11.0",
+    "version": "1.13.1",
     "title": "Enumerator",
     "description": "A lightning-fast enumerator for arrays.",
     "authors": [ "James Ko" ],
