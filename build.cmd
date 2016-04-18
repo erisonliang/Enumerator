@@ -57,14 +57,14 @@ goto :EOF
 if "%~1" == "" goto ParsingDone
 
 if "%~1" == "-c" (
+    set "Config=%~2"
     shift
-    set "Config=%~1"
     goto ParseOptions
 )
 
 if "%~1" == "--config" (
+    set "Config=%~2"
     shift
-    set "Config=%~1"
     goto ParseOptions
 )
 
@@ -77,7 +77,8 @@ goto ParseOptions
 call :CheckInstalled dnu dnx
 
 :: Do the actual work
-cd "%~dp0"
+pushd "%~dp0"
 call :Restore src test
 call :BuildSubdir src
 call :RunTests test
+popd
